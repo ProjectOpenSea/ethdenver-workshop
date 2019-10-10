@@ -7,7 +7,6 @@ const Web3ProviderEngine = require('web3-provider-engine')
 
 const MNEMONIC = process.env.MNEMONIC
 const INFURA_KEY = process.env.INFURA_KEY
-const FACTORY_CONTRACT_ADDRESS = process.env.FACTORY_CONTRACT_ADDRESS
 const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS
 const OWNER_ADDRESS = process.env.OWNER_ADDRESS
 const NETWORK = process.env.NETWORK
@@ -18,8 +17,8 @@ if (!MNEMONIC || !INFURA_KEY || !NETWORK || !OWNER_ADDRESS) {
     return
 }
 
-if (!FACTORY_CONTRACT_ADDRESS && !NFT_CONTRACT_ADDRESS) {
-    console.error("Please either set a factory or NFT contract address.")
+if (!NFT_CONTRACT_ADDRESS) {
+    console.error("Please either set an NFT contract address.")
     return
 }
 
@@ -45,8 +44,10 @@ async function main() {
     // Example: simple fixed-price sale of an item owned by a user. 
     console.log("Auctioning an item for a fixed price...")
     const fixedPriceSellOrder = await seaport.createSellOrder({
-        tokenId: "1",
-        tokenAddress: NFT_CONTRACT_ADDRESS,
+        asset: {
+            tokenId: "1",
+            tokenAddress: NFT_CONTRACT_ADDRESS
+        },
         startAmount: .05,
         expirationTime: 0,
         accountAddress: OWNER_ADDRESS
@@ -57,8 +58,10 @@ async function main() {
     console.log("Dutch auctioning an item...")
     const expirationTime = Math.round(Date.now() / 1000 + 60 * 60 * 24)
     const dutchAuctionSellOrder = await seaport.createSellOrder({
-        tokenId: "2",
-        tokenAddress: NFT_CONTRACT_ADDRESS,
+        asset: {
+            tokenId: "2",
+            tokenAddress: NFT_CONTRACT_ADDRESS
+        },
         startAmount: .05,
         endAmount: .01,
         expirationTime: expirationTime,
@@ -70,8 +73,10 @@ async function main() {
     console.log("English auctioning an item in DAI...")
     const wethAddress = NETWORK == 'mainnet' ? '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' : "0xc778417e063141139fce010982780140aa0cd5ab"
     const englishAuctionSellOrder = await seaport.createSellOrder({
-        tokenId: "3",
-        tokenAddress: NFT_CONTRACT_ADDRESS,
+        asset: {
+            tokenId: "3",
+            tokenAddress: NFT_CONTRACT_ADDRESS
+        },
         startAmount: .03,
         expirationTime: expirationTime,
         waitForHighestBid: true,
