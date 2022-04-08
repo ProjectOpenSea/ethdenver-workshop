@@ -1,5 +1,5 @@
 {
-  "name": "erc721-starter-contracts",
+  "name": "@opensea/erc721-starter-contracts",
   "version": "1.0.0",
   "description": "Starter contracts for an ERC721 project.",
   "main": "index.js",
